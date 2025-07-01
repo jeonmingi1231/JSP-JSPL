@@ -2,6 +2,7 @@
 <%@page import="dto.Book"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page errorPage="exceptionNoBookId.jsp" %> <!-- p405 추가 찾는 id가 없을 경우 오류 페이지 나옴 -->	
 <%-- <jsp:useBean id="bookDAO" class="dao.BookRepository" scope="session" /> --%>
 <!-- dao클래스 사용 -->	
 <!DOCTYPE html>
@@ -15,6 +16,17 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
 	crossorigin="anonymous"></script>
+	
+<script type="text/javascript">
+	/* 장바구니용 컨펌(예/아니오) 추가용 */
+	function addToCart(){
+		if(confirm("도서를 장바구니에 추가하시겠습니까???")){
+			document.addForm.submit(); // 값 저장
+		}else {
+			document.addForm.reset(); // 값 초기화
+		}
+	}
+</script>
 
 <title>교재 상세 페이지 입니다......</title>
 </head>
@@ -65,8 +77,15 @@
 				<p><b>분류</b> : <%=book.getCategory()%>
 				<p><b>재고수</b> : <%=book.getUnitsInStock()%>
 				<h4><%=book.getUnitPrice()%>원</h4>
-				<p><a href="#" class="btn btn-info"> 도서주문 &raquo;</a> 
+				<p>
+				
+					<form name="addForm" action="./addCart.jsp?id=<%=book.getBookId() %>" method="post"> 
+					<a href="#" class="btn btn-info" onclick="addToCart()"> 도서주문 &raquo;</a>
+					<a href="./cart.jsp" class="btn btn-warning">장바구니 &raquo;</a>
 					<a href="./books.jsp" class="btn btn-secondary"> 도서목록 &raquo;</a>
+					
+					</form>
+					
 	    	</div>   
 	   	</div> <!-- 본문영역 : 중간 box --> 
 	   	
